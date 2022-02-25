@@ -16,7 +16,7 @@ const CardFooterButtons: React.FC<ICardFooterButtons> = ({ currentUrl, emailSent
 
       { currentUrl === routes.LOGIN ? 
         <>
-          <Link as={RouterLink} color='gray' to={routes.FIND_ACCOUNT}>Forgot account?</Link>
+          <Link as={RouterLink} color='gray' to={routes.FIND_ACCOUNT}>Forgot your account?</Link>
           <Link as={RouterLink} color='gray' to={routes.REGISTER}>Don't have an account?</Link>
         </>
       : null }
