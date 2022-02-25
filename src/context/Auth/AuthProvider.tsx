@@ -1,5 +1,6 @@
 import { 
   signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword, 
+  createUserWithEmailAndPassword as firebaseRegisterWithEmailAndPassword,
   User 
 } from 'firebase/auth';
 import { FC, useEffect, useState } from 'react';
@@ -27,6 +28,14 @@ export const AuthProvider: FC<IChildrenProps> = ({ children }) => {
       throw err;
     }
   };
+
+  const registerWithEmailAndPassword = async (email: string, password: string) => {
+    try {
+      await firebaseRegisterWithEmailAndPassword(auth, email, password);
+    } catch(err) {
+      throw err;
+    }
+  };
   
   const logOut = async () => {
     await auth.signOut();
@@ -39,7 +48,8 @@ export const AuthProvider: FC<IChildrenProps> = ({ children }) => {
           currentUser
         },
         signInWithEmailAndPassword,
-        logOut,
+        registerWithEmailAndPassword,
+        logOut
       }}
     >
       { children }

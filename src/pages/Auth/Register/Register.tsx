@@ -9,7 +9,7 @@ import { useAuthContext } from '../../../hooks/useAuthContext';
 import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles';
 
 const Register: FC = () => {
-  const { logOut } = useAuthContext();
+  const { registerWithEmailAndPassword, logOut } = useAuthContext();
 
   const [formValues, onInputChange] = useForm({
     email: '',
@@ -26,7 +26,8 @@ const Register: FC = () => {
     e.preventDefault();
 
     try {
-      // TODO: Register
+      if (password !== repeatedPassword) throw { }; // TODO: Auth error
+      await registerWithEmailAndPassword(email, password);
     } catch(err: any) {
       // TODO: Error alert
     } finally {
