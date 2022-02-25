@@ -1,13 +1,15 @@
-import { FC, FormEvent } from 'react';
+import { FC, FormEvent, useEffect } from 'react';
 import { Button } from '@chakra-ui/react';
 
 import routes from '../../../routes';
 import { useForm } from '../../../hooks/useForm';
 import { Brand, FormInput } from '../../../common';
 import CardFooterButtons from '../CardFooterButtons';
+import { useAuthContext } from '../../../hooks/useAuthContext';
 import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles';
 
 const Login: FC = () => {
+  const { signInWithEmailAndPassword, logOut } = useAuthContext();
 
   const [formValues, onInputChange] = useForm({
     email: '',
@@ -15,8 +17,19 @@ const Login: FC = () => {
   });
   const { email, password } = formValues;
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    logOut();
+  }, []);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    try {
+      await signInWithEmailAndPassword(email, password);
+    } catch(err: any) {
+      // TODO: Error alert
+    } finally {
+    }
   };
 
   return (
