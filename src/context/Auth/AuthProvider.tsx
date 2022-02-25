@@ -1,6 +1,7 @@
 import { 
   signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword, 
   createUserWithEmailAndPassword as firebaseRegisterWithEmailAndPassword,
+  sendPasswordResetEmail as firebaseSendPasswordResetEmail,
   User 
 } from 'firebase/auth';
 import { FC, useEffect, useState } from 'react';
@@ -36,6 +37,14 @@ export const AuthProvider: FC<IChildrenProps> = ({ children }) => {
       throw err;
     }
   };
+
+  const sendPasswordResetByEmail = async (email: string) => {
+    try {
+      await firebaseSendPasswordResetEmail(auth, email);      
+    } catch(err) {
+      throw err;
+    }
+  };
   
   const logOut = async () => {
     await auth.signOut();
@@ -49,6 +58,7 @@ export const AuthProvider: FC<IChildrenProps> = ({ children }) => {
         },
         signInWithEmailAndPassword,
         registerWithEmailAndPassword,
+        sendPasswordResetByEmail,
         logOut
       }}
     >

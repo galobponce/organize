@@ -3,8 +3,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import routes from './routes';
-import { Login, Register } from './pages';
 import theme from './config/chakra.config';
+import { Login, Register, FindAccount } from './pages';
 import { AuthProvider } from './context/Auth/AuthProvider';
 
 const App: FC = () => {
@@ -16,6 +16,7 @@ const App: FC = () => {
             <Route path={routes.DEFAULT} element={<Navigate to={routes.LOGIN} />} />
             <Route path={routes.LOGIN} element={<Login />} />
             <Route path={routes.REGISTER} element={<Register />} />
+            <Route path={routes.FIND_ACCOUNT} element={<FindAccount />} />
           </Routes>
         </Router>
       </AuthProvider>

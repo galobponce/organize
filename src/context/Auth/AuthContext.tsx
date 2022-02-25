@@ -9,6 +9,7 @@ export interface IAuthContext {
   authState: AuthState;
   signInWithEmailAndPassword: (email: string, password: string) => Promise<void>;
   registerWithEmailAndPassword: (email: string, password: string) => Promise<void>;
+  sendPasswordResetByEmail: (email: string) => Promise<void>;
   logOut: () => Promise<void>;
 };
 
