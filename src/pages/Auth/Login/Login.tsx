@@ -1,14 +1,18 @@
+import { useNavigate } from 'react-router-dom';
 import { FC, FormEvent, useEffect } from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button, useToast } from '@chakra-ui/react';
 
 import routes from '../../../routes';
 import { useForm } from '../../../hooks/useForm';
 import { Brand, FormInput } from '../../../common';
 import CardFooterButtons from '../CardFooterButtons';
 import { useAuthContext } from '../../../hooks/useAuthContext';
+import { getMessageFromError } from '../../../utils/ErrorUtils';
 import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles';
 
 const Login: FC = () => {
+  const toast = useToast();
+  const navitage = useNavigate();
   const { signInWithEmailAndPassword, logOut } = useAuthContext();
 
   const [formValues, onInputChange] = useForm({
@@ -26,8 +30,20 @@ const Login: FC = () => {
 
     try {
       await signInWithEmailAndPassword(email, password);
+      toast({
+        title: 'User Logged In Successfully',
+        position: 'top-right',
+        status: 'success',
+        isClosable: true,
+      });
+      navitage(routes.HOME);
     } catch(err: any) {
-      // TODO: Error alert
+      toast({
+        title: getMessageFromError(err),
+        position: 'top-right',
+        status: 'error',
+        isClosable: true,
+      });
     } finally {
     }
   };

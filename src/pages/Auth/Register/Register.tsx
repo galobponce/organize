@@ -1,14 +1,18 @@
+import { useNavigate } from 'react-router-dom';
 import { FC, FormEvent, useEffect } from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button, useToast } from '@chakra-ui/react';
 
 import routes from '../../../routes';
 import { useForm } from '../../../hooks/useForm';
 import { Brand, FormInput } from '../../../common';
 import CardFooterButtons from '../CardFooterButtons';
 import { useAuthContext } from '../../../hooks/useAuthContext';
+import { getMessageFromError, authErrors } from '../../../utils/ErrorUtils';
 import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles';
 
 const Register: FC = () => {
+  const toast = useToast();
+  const navitage = useNavigate();
   const { registerWithEmailAndPassword, logOut } = useAuthContext();
 
   const [formValues, onInputChange] = useForm({
@@ -26,10 +30,22 @@ const Register: FC = () => {
     e.preventDefault();
 
     try {
-      if (password !== repeatedPassword) throw { }; // TODO: Auth error
+      if (password !== repeatedPassword) throw { code: authErrors.WRONG_PASSWORD };
       await registerWithEmailAndPassword(email, password);
+      toast({
+        title: 'User Registered Successfully',
+        position: 'top-right',
+        status: 'success',
+        isClosable: true,
+      });
+      navitage(routes.LOGIN);
     } catch(err: any) {
-      // TODO: Error alert
+      toast({
+        title: getMessageFromError(err),
+        position: 'top-right',
+        status: 'error',
+        isClosable: true,
+      });
     } finally {
     }
   };
