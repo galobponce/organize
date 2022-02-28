@@ -16,7 +16,7 @@ export const getMessageFromError = (err: FirebaseError) => {
       break;
 
     case authErrors.WRONG_PASSWORD:
-      message = 'User\'s credentials does not match';
+      message = 'Invalid password';
       break;
 
     case authErrors.WEAK_PASSWORD:
