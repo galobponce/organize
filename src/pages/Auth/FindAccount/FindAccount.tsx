@@ -1,5 +1,5 @@
+import { Button, useToast } from '@chakra-ui/react';
 import { FC, useState, useEffect, FormEvent } from 'react';
-import { Button } from '@chakra-ui/react';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -8,11 +8,15 @@ import { FormInput } from '../../../common';
 import { useForm } from '../../../hooks/useForm';
 import { MutedText } from '../../../common/styles';
 import CardFooterButtons from '../CardFooterButtons';
+import { useAppContext } from '../../../hooks/useAppContext';
 import { useAuthContext } from '../../../hooks/useAuthContext';
+import { getMessageFromError } from '../../../utils/ErrorUtils';
 import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles';
 
 const FindAccount: FC = () => {
+  const toast = useToast();
   const [emailSent, setEmailSent] = useState(false);
+  const { appState, setLoading } = useAppContext();
   const { sendPasswordResetByEmail, logOut } = useAuthContext();
 
   const [formValues, onInputChange] = useForm({
@@ -28,11 +32,18 @@ const FindAccount: FC = () => {
     e.preventDefault();
 
     try {
+      setLoading(true);
       await sendPasswordResetByEmail(email);
       setEmailSent(true);
     } catch(err: any) {
-      // TODO: Error alert
+      toast({
+        title: getMessageFromError(err),
+        position: 'top-right',
+        status: 'error',
+        isClosable: true,
+      });
     } finally {
+      setLoading(false);
     }
   }
 
@@ -55,7 +66,7 @@ const FindAccount: FC = () => {
               <form onSubmit={handleSubmit}>
                 <FormInput required type='email' name='email' label='Email Address' inputValue={email} onInputChange={onInputChange} />
                 <ButtonContainer>
-                  <Button type='submit' colorScheme='teal' size='lg'>Search</Button>
+                  <Button type='submit' colorScheme='teal' size='lg' isLoading={appState.isLoading}>Search</Button>
                 </ButtonContainer>
               </form>
             </CardBody>

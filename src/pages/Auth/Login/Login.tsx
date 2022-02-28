@@ -6,6 +6,7 @@ import routes from '../../../routes';
 import { useForm } from '../../../hooks/useForm';
 import { Brand, FormInput } from '../../../common';
 import CardFooterButtons from '../CardFooterButtons';
+import { useAppContext } from '../../../hooks/useAppContext';
 import { useAuthContext } from '../../../hooks/useAuthContext';
 import { getMessageFromError } from '../../../utils/ErrorUtils';
 import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles';
@@ -13,6 +14,7 @@ import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles
 const Login: FC = () => {
   const toast = useToast();
   const navitage = useNavigate();
+  const { appState, setLoading } = useAppContext();
   const { signInWithEmailAndPassword, logOut } = useAuthContext();
 
   const [formValues, onInputChange] = useForm({
@@ -29,6 +31,7 @@ const Login: FC = () => {
     e.preventDefault();
 
     try {
+      setLoading(true);
       await signInWithEmailAndPassword(email, password);
       toast({
         title: 'User Logged In Successfully',
@@ -45,6 +48,7 @@ const Login: FC = () => {
         isClosable: true,
       });
     } finally {
+      setLoading(false);
     }
   };
 
@@ -58,7 +62,7 @@ const Login: FC = () => {
             <FormInput required type='email' name='email' label='Email Address' inputValue={email} onInputChange={onInputChange} />
             <FormInput required type='password' name='password' label='Password' inputValue={password} onInputChange={onInputChange} />
             <ButtonContainer>
-              <Button type='submit' colorScheme='teal' size='lg'>Log In</Button>
+              <Button type='submit' colorScheme='teal' size='lg' isLoading={appState.isLoading}>Log In</Button>
             </ButtonContainer>
           </form>
         </CardBody>
