@@ -4,9 +4,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 
 import routes from './routes';
 import theme from './config/chakra.config';
-import { Login, Register, FindAccount } from './pages';
+import { PrivateRoute } from './utils/PrivateRoute';
 import { AppProvider } from './context/App/AppProvider';
 import { AuthProvider } from './context/Auth/AuthProvider';
+import { Login, Register, FindAccount, Home } from './pages';
 
 const App: FC = () => {
   return (
@@ -19,6 +20,10 @@ const App: FC = () => {
               <Route path={routes.LOGIN} element={<Login />} />
               <Route path={routes.REGISTER} element={<Register />} />
               <Route path={routes.FIND_ACCOUNT} element={<FindAccount />} />
+              <Route path={routes.HOME} element={
+                <PrivateRoute component={Home} />
+              } 
+              />
             </Routes>
           </Router>
         </AuthProvider>
