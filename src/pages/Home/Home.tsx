@@ -1,8 +1,12 @@
 import { FC } from 'react';
 
+import { ProjectProvider } from '../../context/Project/ProjectProvider';
+
 const Home: FC = () => {
   return (
-    <h1>Home</h1>
+    <ProjectProvider>
+      <h1>Home</h1>
+    </ProjectProvider>
   );
 }
 
