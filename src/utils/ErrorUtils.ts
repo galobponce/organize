@@ -5,6 +5,7 @@ export const authErrors = {
   WRONG_PASSWORD: 'auth/wrong-password',
   WEAK_PASSWORD: 'auth/weak-password',
   INVALID_EMAIL: 'auth/invalid-email',
+  USED_EMAIL: 'auth/email-already-in-use',
   PASSWORDS_MUST_MATCH: 'auth/passwords-must-match'
 };
 
@@ -25,6 +26,10 @@ export const getMessageFromError = (err: FirebaseError) => {
 
     case authErrors.INVALID_EMAIL:
       message = 'Invalid email';
+      break;
+
+    case authErrors.USED_EMAIL:
+      message = 'Email already in use';
       break;
 
     case authErrors.PASSWORDS_MUST_MATCH:
