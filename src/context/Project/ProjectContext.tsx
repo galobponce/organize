@@ -1,14 +1,14 @@
 import { createContext } from 'react';
 
 export interface Project {
-  id: string;
+  id?: string;
   name: string;
   user: string;
 };
 
 export interface IProjectContext {
   projectState: ProjectState;
-  fetchProjects: () => void;
+  fetchUserProjects: () => void;
   addProject: (name: string) => void;
   deleteProject: (id: string) => void;
   selectProject: (id: string) => void;
@@ -18,7 +18,7 @@ export interface IProjectContext {
 
 export interface ProjectState {
   projects: Project[];
-  selectedProject: Project | null;
+  selectedProject: Project;
   displayProjectFormModal: boolean;
 };
 

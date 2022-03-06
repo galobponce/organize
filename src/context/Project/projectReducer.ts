@@ -6,7 +6,7 @@ export type ProjectReducerAction =
   | { type: ProjectReducerActions.DELETE, payload: { id: string } }
   | { type: ProjectReducerActions.SELECT, payload: { id: string } }
   | { type: ProjectReducerActions.DESELECT, payload: null }
-  | { type: ProjectReducerActions.SET_DISPLAY_PROJECT_FORM_MODAL, payload: { boolean: boolean } };
+  | { type: ProjectReducerActions.SET_DISPLAY_PROJECT_FORM_MODAL, payload: { bool: boolean } };
 
 export enum ProjectReducerActions {
   'FETCH',
@@ -33,9 +33,9 @@ export const projectReducer = (state: ProjectState, action: ProjectReducerAction
     
     case ProjectReducerActions.DELETE:
       return {
-        // Makes selectedProject null if deleted
+        // Makes selectedProject empty if deleted
         ...state,
-        selectedProject: state.selectedProject?.id === action.payload.id ? null : state.selectedProject,
+        selectedProject: state.selectedProject?.id === action.payload.id ? { } as Project : state.selectedProject,
         projects: state.projects.filter((project) => project.id !== action.payload.id)
       };
 
@@ -48,13 +48,13 @@ export const projectReducer = (state: ProjectState, action: ProjectReducerAction
     case ProjectReducerActions.DESELECT:
       return {
         ...state,
-        selectedProject: null
+        selectedProject: { } as Project
       };
 
     case ProjectReducerActions.SET_DISPLAY_PROJECT_FORM_MODAL:
       return {
         ...state,
-        displayProjectFormModal: action.payload.boolean
+        displayProjectFormModal: action.payload.bool
       };
 
     default:

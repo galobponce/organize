@@ -1,18 +1,18 @@
 import { FC, useEffect, useReducer } from 'react';
 
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { ProjectContext, ProjectState } from './ProjectContext';
+import { Project, ProjectContext, ProjectState } from './ProjectContext';
 import { projectReducer, ProjectReducerActions } from './projectReducer';
 import { QueryUserProjects, AddProject, DeleteProject } from '../../utils/FirebaseUtils';
 
 const INITIAL_STATE: ProjectState = {
   projects: [],
-  selectedProject: null,
+  selectedProject: { } as Project,
   displayProjectFormModal: false
 };
 
 interface IChildrenProps {
-  children: JSX.Element | JSX.Element[]
+  children: JSX.Element | JSX.Element[];
 };
 
 export const ProjectProvider: FC<IChildrenProps> = ({ children }) => {
@@ -20,18 +20,19 @@ export const ProjectProvider: FC<IChildrenProps> = ({ children }) => {
   const [projectState, projectDispatch] = useReducer(projectReducer, INITIAL_STATE);
 
   useEffect(() => {
-    fetchProjects();
+    fetchUserProjects();
   }, [])
 
-  const fetchProjects = async () => {
+  const fetchUserProjects = async () => {
     const projects = await QueryUserProjects(authState.currentUser.uid);
     projectDispatch({ type: ProjectReducerActions.FETCH, payload: projects });
   };
 
   const addProject = async (name: string) => {
-    const projectId = await AddProject(name, authState.currentUser.uid);
-    const project = { id: projectId, name, user: authState.currentUser.uid };
-    projectDispatch({ type: ProjectReducerActions.ADD, payload: project });
+    const newProject: Project = { name, user: authState.currentUser.uid };
+    const createdProjectId = await AddProject(newProject);
+    const createdProject: Project = { id: createdProjectId, ...newProject };
+    projectDispatch({ type: ProjectReducerActions.ADD, payload: createdProject });
   };
 
   const deleteProject = async (id: string) => {
@@ -47,14 +48,14 @@ export const ProjectProvider: FC<IChildrenProps> = ({ children }) => {
     projectDispatch({ type: ProjectReducerActions.DESELECT, payload: null });
   };
 
-  const setDisplayProjectFormModal = (boolean: boolean) => {
-    projectDispatch({ type: ProjectReducerActions.SET_DISPLAY_PROJECT_FORM_MODAL, payload: { boolean } });
+  const setDisplayProjectFormModal = (bool: boolean) => {
+    projectDispatch({ type: ProjectReducerActions.SET_DISPLAY_PROJECT_FORM_MODAL, payload: { bool } });
   };
 
   return (
     <ProjectContext.Provider value={{
       projectState,
-      fetchProjects,
+      fetchUserProjects,
       addProject,
       deleteProject,
       selectProject,
