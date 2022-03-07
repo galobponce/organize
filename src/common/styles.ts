@@ -1,18 +1,23 @@
 import { theme } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
-export const BigTitle = styled.h1`
+export const blackGrayColored = styled.h1`
+  color: ${theme.colors.gray[600]};
+`;
+
+export const BigTitle = styled(blackGrayColored)`
   font-weight: 700;
   font-size: 3rem;
 `;
 
-export const MidTitle = styled.h1`
+export const MidTitle = styled(blackGrayColored)`
   font-weight: 700;
   font-size: 2.4rem;
 `;
 
-export const SmallTitle = styled.h1`
+export const SmallTitle = styled(blackGrayColored)`
   font-weight: 700;
+  font-size: 1.4rem;
 `;
 
 export const MutedText = styled.p`
@@ -27,8 +32,14 @@ export const Logo = styled(BigTitle)`
   height: 5rem;
   cursor: pointer;
   translate: none;
+  color: ${theme.colors.gray[700]};
+  user-select: none;
 `;
 
 export const InputWrapper = styled.div`
   margin-bottom: .5rem;
+`;
+
+export const VerticalEmptySeparator = styled.div<{ size: 'sm' | 'xl' }>`
+  margin-top: ${props => props.size === 'sm' ? '1rem' : '3rem'};
 `;
