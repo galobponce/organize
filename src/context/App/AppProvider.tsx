@@ -6,7 +6,8 @@ import { appReducer } from './appReducer';
 import { AppReducerActions } from './appReducer';
 
 const INITIAL_STATE: AppState = {
-  isLoading: false
+  isLoading: false,
+  displayMobileSidebar: false
 };
 
 interface IChildrenProps {
@@ -20,10 +21,15 @@ export const AppProvider: React.FC<IChildrenProps> = ({ children }) => {
     appDispatch({ type: AppReducerActions.SET_LOADING, payload: { bool } });
   };
 
+  const setDisplayMobileSidebar = (bool: boolean) => {
+    appDispatch({ type: AppReducerActions.SET_DISPLAY_MOBILE_SIDEBAR, payload: { bool } });
+  };
+
   return (
     <AppContext.Provider value={{
       appState,
-      setLoading
+      setLoading,
+      setDisplayMobileSidebar
     }}>
       { children }
     </AppContext.Provider>
