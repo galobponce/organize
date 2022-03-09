@@ -16,7 +16,6 @@ interface IChildrenProps {
 };
 
 export const ProjectProvider: FC<IChildrenProps> = ({ children }) => {
-  const { authState } = useAuthContext();
   const [projectState, projectDispatch] = useReducer(projectReducer, INITIAL_STATE);
 
   useEffect(() => {
@@ -24,12 +23,12 @@ export const ProjectProvider: FC<IChildrenProps> = ({ children }) => {
   }, [])
 
   const fetchUserProjects = async () => {
-    const projects = await QueryUserProjects(authState.currentUser.uid);
+    const projects = await QueryUserProjects(localStorage.getItem("userToken") || "");
     projectDispatch({ type: ProjectReducerActions.FETCH, payload: projects });
   };
 
   const addProject = async (name: string) => {
-    const newProject: Project = { name, user: authState.currentUser.uid };
+    const newProject: Project = { name, user: localStorage.getItem("userToken") || "" };
     const createdProjectId = await AddProject(newProject);
     const createdProject: Project = { id: createdProjectId, ...newProject };
     projectDispatch({ type: ProjectReducerActions.ADD, payload: createdProject });

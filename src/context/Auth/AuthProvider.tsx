@@ -18,6 +18,11 @@ export const AuthProvider: FC<IChildrenProps> = ({ children }) => {
 
   useEffect(() => {
     auth.onAuthStateChanged(user => {
+      if (user) {
+        localStorage.setItem("userToken", user.uid);
+      } else {
+        localStorage.clear();
+      }
       setCurrentUser(user as User);
     });
   }, []);

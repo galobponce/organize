@@ -20,10 +20,9 @@ interface IChildrenProps {
 export const TaskProvider: FC<IChildrenProps> = ({ children }) => {
   const [taskState, taskDispatch] = useReducer(taskReducer, INITIAL_STATE);
   const { projectState } = useProjectContext();
-  const { authState } = useAuthContext();
 
   const fetchTasksByProject = async (project_id: string) => {
-    const tasks = await QueryUserTasksByProject(project_id, authState.currentUser.uid);
+    const tasks = await QueryUserTasksByProject(project_id, localStorage.getItem("userToken") || "");
     taskDispatch({ type: TaskReducerActions.SET, payload: tasks });
   };
 
@@ -31,7 +30,7 @@ export const TaskProvider: FC<IChildrenProps> = ({ children }) => {
     const newTask: Task = {
       name,
       description,
-      user: authState.currentUser.uid,
+      user: localStorage.getItem("userToken") || "",
       creation_date: new Date,
       due_date,
       project_id: projectState.selectedProject.id,
