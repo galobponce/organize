@@ -2,7 +2,8 @@ import { FC } from 'react';
 import { Button } from '@chakra-ui/react';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useAppContext } from '../../../hooks/useAppContext';
+
+import { useAppContext } from '../../../../hooks/useAppContext';
 
 const MobileNavButton: FC = () => {
   const { setDisplayMobileSidebar } = useAppContext();
