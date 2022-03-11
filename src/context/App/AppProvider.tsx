@@ -1,13 +1,14 @@
 import React, { useReducer } from 'react';
 
-import { AppState } from './AppContext';
 import { AppContext } from './AppContext';
 import { appReducer } from './appReducer';
 import { AppReducerActions } from './appReducer';
+import { AppState, CustomModalState } from './AppContext';
 
 const INITIAL_STATE: AppState = {
   isLoading: false,
-  displayMobileSidebar: false
+  displayMobileSidebar: false,
+  customModalState: { } as CustomModalState
 };
 
 interface IChildrenProps {
@@ -25,11 +26,16 @@ export const AppProvider: React.FC<IChildrenProps> = ({ children }) => {
     appDispatch({ type: AppReducerActions.SET_DISPLAY_MOBILE_SIDEBAR, payload: { bool } });
   };
 
+  const setCustomModalState = (customModalState: CustomModalState) => {
+    appDispatch({ type: AppReducerActions.SET_CUSTOM_MODAL_STATE, payload: customModalState });
+  };
+
   return (
     <AppContext.Provider value={{
       appState,
       setLoading,
-      setDisplayMobileSidebar
+      setDisplayMobileSidebar,
+      setCustomModalState
     }}>
       { children }
     </AppContext.Provider>

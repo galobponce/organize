@@ -1,0 +1,47 @@
+import { FC } from 'react';
+import { 
+  Modal, 
+  ModalBody,
+  ModalCloseButton, 
+  ModalContent, 
+  ModalFooter, 
+  ModalHeader, 
+  ModalOverlay, 
+  Button 
+} from '@chakra-ui/react';
+
+import { useAppContext } from '../../hooks/useAppContext';
+
+const CustomModal: FC = () => {
+  const { appState, setCustomModalState } = useAppContext();
+  const { customModalState } = appState;
+  const { display,title, text, confirmationText, cancelText, confirmationCallback } = customModalState;
+
+  const hideCustomModal = () => {
+    setCustomModalState({ ...customModalState, display: false });
+  };
+
+  const handleConfirmation = async () => {
+    await confirmationCallback();
+    hideCustomModal();
+  };
+
+  return (
+    <Modal isOpen={display} onClose={hideCustomModal} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{title}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody textAlign={'center'}>
+            {text}
+          </ModalBody>
+          <ModalFooter>
+            <Button isLoading={appState.isLoading} onClick={handleConfirmation} mr={3} colorScheme='red'>{confirmationText}</Button>
+            <Button onClick={hideCustomModal} variant='ghost'>{cancelText}</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+  );
+};
+
+export default CustomModal;
