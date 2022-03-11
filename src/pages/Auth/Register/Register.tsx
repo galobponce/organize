@@ -6,7 +6,6 @@ import routes from '../../../routes';
 import { useForm } from '../../../hooks/useForm';
 import { Brand, FormInput } from '../../../common';
 import CardFooterButtons from '../CardFooterButtons';
-import { useAppContext } from '../../../hooks/useAppContext';
 import { useAuthContext } from '../../../hooks/useAuthContext';
 import { getMessageFromError, authErrors } from '../../../utils/ErrorUtils';
 import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles';
@@ -14,8 +13,7 @@ import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles
 const Register: FC = () => {
   const toast = useToast();
   const navitage = useNavigate();
-  const { appState, setLoading } = useAppContext();
-  const { registerWithEmailAndPassword, logOut } = useAuthContext();
+  const { authState, registerWithEmailAndPassword, logOut, setAuthLoading } = useAuthContext();
 
   const [formValues, onInputChange] = useForm({
     email: '',
@@ -32,7 +30,7 @@ const Register: FC = () => {
     e.preventDefault();
 
     try {
-      setLoading(true);
+      setAuthLoading(true);
       if (password !== repeatedPassword) throw { code: authErrors.WRONG_PASSWORD };
       await registerWithEmailAndPassword(email, password);
       toast({
@@ -50,7 +48,7 @@ const Register: FC = () => {
         isClosable: true,
       });
     } finally {
-      setLoading(false);
+      setAuthLoading(false);
     }
   };
 
@@ -65,7 +63,7 @@ const Register: FC = () => {
             <FormInput required type='password' name='password' label='Password' inputValue={password} onInputChange={onInputChange} />
             <FormInput required type='password' name='repeatedPassword' label='Re-enter password' inputValue={repeatedPassword} onInputChange={onInputChange} />
             <ButtonContainer>
-              <Button type='submit' colorScheme='teal' size='lg' isLoading={appState.isLoading}>Sign Up</Button>
+              <Button type='submit' colorScheme='teal' size='lg' isLoading={authState.isAuthLoading}>Sign Up</Button>
             </ButtonContainer>
           </form>
         </CardBody>

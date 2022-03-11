@@ -6,7 +6,7 @@ import { AppReducerActions } from './appReducer';
 import { AppState, CustomModalState } from './AppContext';
 
 const INITIAL_STATE: AppState = {
-  isLoading: false,
+  isAppLoading: false,
   displayMobileSidebar: false,
   customModalState: { } as CustomModalState
 };
@@ -18,7 +18,7 @@ interface IChildrenProps {
 export const AppProvider: React.FC<IChildrenProps> = ({ children }) => {
   const [appState, appDispatch] = useReducer(appReducer, INITIAL_STATE);
 
-  const setLoading = (bool: boolean) => {
+  const setAppLoading = (bool: boolean) => {
     appDispatch({ type: AppReducerActions.SET_LOADING, payload: { bool } });
   };
 
@@ -33,7 +33,7 @@ export const AppProvider: React.FC<IChildrenProps> = ({ children }) => {
   return (
     <AppContext.Provider value={{
       appState,
-      setLoading,
+      setAppLoading,
       setDisplayMobileSidebar,
       setCustomModalState
     }}>

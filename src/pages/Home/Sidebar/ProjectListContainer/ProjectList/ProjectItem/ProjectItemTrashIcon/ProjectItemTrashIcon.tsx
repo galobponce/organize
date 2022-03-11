@@ -10,8 +10,8 @@ import { getMessageFromError } from '../../../../../../../utils/ErrorUtils';
 
 const ProjectItemTrashIcon: FC<{ projectId: string }> = ({ projectId }) => {
   const toast = useToast();
-  const { deleteProject } = useProjectContext();
-  const { setCustomModalState, setLoading } = useAppContext();
+  const { setCustomModalState } = useAppContext();
+  const { projectState, deleteProject, setProjectLoading } = useProjectContext();
 
   const handleKeyUp = (e: { which: number }) => {
     if (e.which === 13 || e.which === 32) {
@@ -30,7 +30,7 @@ const ProjectItemTrashIcon: FC<{ projectId: string }> = ({ projectId }) => {
         cancelText: 'Cancel',
         confirmationCallback: async () => {
           try {
-            setLoading(true);
+            setProjectLoading(true);
             await deleteProject(projectId); 
             toast({
               title: 'Project Deleted',
@@ -46,9 +46,10 @@ const ProjectItemTrashIcon: FC<{ projectId: string }> = ({ projectId }) => {
               isClosable: true,
             });
           } finally {
-            setLoading(false);
+            setProjectLoading(false);
           }
-        }
+        },
+        isModalLoading: projectState.isProjectLoading
       }
     );
   };

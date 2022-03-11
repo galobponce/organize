@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 export interface AppState {
-  isLoading: boolean;
+  isAppLoading: boolean;
   displayMobileSidebar: boolean;
   customModalState: CustomModalState;
 };
@@ -13,11 +13,12 @@ export interface CustomModalState {
   confirmationText: string;
   cancelText: string;
   confirmationCallback: () => any;
+  isModalLoading: boolean;
 };
 
 export interface IAppContext {
   appState: AppState;
-  setLoading: (bool: boolean) => void;
+  setAppLoading: (bool: boolean) => void;
   setDisplayMobileSidebar: (bool: boolean) => void;
   setCustomModalState: (customModalState: CustomModalState) => void;
 };

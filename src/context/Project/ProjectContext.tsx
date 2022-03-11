@@ -14,12 +14,14 @@ export interface IProjectContext {
   selectProject: (id: string) => void;
   deselectProject: () => void;
   setDisplayProjectFormModal: (bool: boolean) => void;
+  setProjectLoading: (bool: boolean) => void;
 };
 
 export interface ProjectState {
   projects: Project[];
   selectedProject: Project;
   displayProjectFormModal: boolean;
+  isProjectLoading: boolean;
 };
 
 export const ProjectContext = createContext<IProjectContext>({} as IProjectContext);

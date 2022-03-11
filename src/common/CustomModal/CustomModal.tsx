@@ -15,7 +15,7 @@ import { useAppContext } from '../../hooks/useAppContext';
 const CustomModal: FC = () => {
   const { appState, setCustomModalState } = useAppContext();
   const { customModalState } = appState;
-  const { display,title, text, confirmationText, cancelText, confirmationCallback } = customModalState;
+  const { display,title, text, confirmationText, cancelText, confirmationCallback, isModalLoading } = customModalState;
 
   const hideCustomModal = () => {
     setCustomModalState({ ...customModalState, display: false });
@@ -36,7 +36,7 @@ const CustomModal: FC = () => {
             {text}
           </ModalBody>
           <ModalFooter>
-            <Button isLoading={appState.isLoading} onClick={handleConfirmation} mr={3} colorScheme='red'>{confirmationText}</Button>
+            <Button isLoading={isModalLoading} onClick={handleConfirmation} mr={3} colorScheme='red'>{confirmationText}</Button>
             <Button onClick={hideCustomModal} variant='ghost'>{cancelText}</Button>
           </ModalFooter>
         </ModalContent>

@@ -1,14 +1,16 @@
 import { FC, useEffect, useReducer } from 'react';
 
-import { useAuthContext } from '../../hooks/useAuthContext';
+import { userIdKey } from '../../config/localStorageKeys';
 import { Project, ProjectContext, ProjectState } from './ProjectContext';
 import { projectReducer, ProjectReducerActions } from './projectReducer';
 import { QueryUserProjects, AddProject, DeleteProject } from '../../utils/FirebaseUtils';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const INITIAL_STATE: ProjectState = {
   projects: [],
   selectedProject: { } as Project,
-  displayProjectFormModal: false
+  displayProjectFormModal: false,
+  isProjectLoading: false
 };
 
 interface IChildrenProps {
@@ -18,17 +20,21 @@ interface IChildrenProps {
 export const ProjectProvider: FC<IChildrenProps> = ({ children }) => {
   const [projectState, projectDispatch] = useReducer(projectReducer, INITIAL_STATE);
 
-  useEffect(() => {
-    fetchUserProjects();
-  }, [])
-
   const fetchUserProjects = async () => {
-    const projects = await QueryUserProjects(localStorage.getItem("userToken") || "");
+    const userId = localStorage.getItem(userIdKey);
+    if (!userId) return; //TODO: throw error;
+    const projects = await QueryUserProjects(userId);
     projectDispatch({ type: ProjectReducerActions.FETCH, payload: projects });
   };
 
+  const setProjectLoading = (bool: boolean) => {
+    projectDispatch({ type: ProjectReducerActions.SET_LOADING, payload: { bool } });
+  };
+
   const addProject = async (name: string) => {
-    const newProject: Project = { name, user: localStorage.getItem("userToken") || "" };
+    const userId = localStorage.getItem(userIdKey);
+    if (!userId) return; //TODO: throw error;
+    const newProject: Project = { name, user: userId };
     const createdProjectId = await AddProject(newProject);
     const createdProject: Project = { id: createdProjectId, ...newProject };
     projectDispatch({ type: ProjectReducerActions.ADD, payload: createdProject });
@@ -55,11 +61,12 @@ export const ProjectProvider: FC<IChildrenProps> = ({ children }) => {
     <ProjectContext.Provider value={{
       projectState,
       fetchUserProjects,
+      setProjectLoading,
       addProject,
       deleteProject,
       selectProject,
       deselectProject,
-      setDisplayProjectFormModal,
+      setDisplayProjectFormModal
     }}>
       { children }
     </ProjectContext.Provider>

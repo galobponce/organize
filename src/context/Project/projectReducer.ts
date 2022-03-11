@@ -2,6 +2,7 @@ import { Project, ProjectState } from './ProjectContext';
 
 export type ProjectReducerAction =
   | { type: ProjectReducerActions.FETCH, payload: Project[] }
+  | { type: ProjectReducerActions.SET_LOADING, payload: { bool: boolean } }
   | { type: ProjectReducerActions.ADD, payload: Project }
   | { type: ProjectReducerActions.DELETE, payload: { id: string } }
   | { type: ProjectReducerActions.SELECT, payload: { id: string } }
@@ -14,7 +15,8 @@ export enum ProjectReducerActions {
   'DELETE',
   'SELECT',
   'DESELECT',
-  'SET_DISPLAY_PROJECT_FORM_MODAL'
+  'SET_DISPLAY_PROJECT_FORM_MODAL',
+  'SET_LOADING',
 };
 
 export const projectReducer = (state: ProjectState, action: ProjectReducerAction): ProjectState => {
@@ -23,6 +25,12 @@ export const projectReducer = (state: ProjectState, action: ProjectReducerAction
       return {
         ...state,
         projects: action.payload
+      };
+
+    case ProjectReducerActions.SET_LOADING:
+      return {
+        ...state,
+        isProjectLoading: action.payload.bool
       };
     
     case ProjectReducerActions.ADD:

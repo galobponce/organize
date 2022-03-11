@@ -1,8 +1,7 @@
-import { User } from 'firebase/auth';
 import { createContext } from 'react';
 
 export interface AuthState {
-  currentUser: User;
+  isAuthLoading: boolean;
 };
 
 export interface IAuthContext {
@@ -11,6 +10,7 @@ export interface IAuthContext {
   registerWithEmailAndPassword: (email: string, password: string) => Promise<void>;
   sendPasswordResetByEmail: (email: string) => Promise<void>;
   logOut: () => Promise<void>;
+  setAuthLoading: (bool: boolean) => void;
 };
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);

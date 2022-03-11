@@ -16,7 +16,7 @@ export const appReducer = (state: AppState, action: AppReducerAction): AppState 
     case AppReducerActions.SET_LOADING:
       return {
         ...state,
-        isLoading: action.payload.bool
+        isAppLoading: action.payload.bool
       };
 
     case AppReducerActions.SET_DISPLAY_MOBILE_SIDEBAR:

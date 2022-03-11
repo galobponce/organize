@@ -8,7 +8,6 @@ import { FormInput } from '../../../common';
 import { useForm } from '../../../hooks/useForm';
 import { MutedText } from '../../../common/styles';
 import CardFooterButtons from '../CardFooterButtons';
-import { useAppContext } from '../../../hooks/useAppContext';
 import { useAuthContext } from '../../../hooks/useAuthContext';
 import { getMessageFromError } from '../../../utils/ErrorUtils';
 import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles';
@@ -16,8 +15,7 @@ import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles
 const FindAccount: FC = () => {
   const toast = useToast();
   const [emailSent, setEmailSent] = useState(false);
-  const { appState, setLoading } = useAppContext();
-  const { sendPasswordResetByEmail, logOut } = useAuthContext();
+  const { authState, sendPasswordResetByEmail, logOut, setAuthLoading } = useAuthContext();
 
   const [formValues, onInputChange] = useForm({
     email: '',
@@ -32,7 +30,7 @@ const FindAccount: FC = () => {
     e.preventDefault();
 
     try {
-      setLoading(true);
+      setAuthLoading(true);
       await sendPasswordResetByEmail(email);
       setEmailSent(true);
     } catch(err: any) {
@@ -43,7 +41,7 @@ const FindAccount: FC = () => {
         isClosable: true,
       });
     } finally {
-      setLoading(false);
+      setAuthLoading(false);
     }
   }
 
@@ -66,7 +64,7 @@ const FindAccount: FC = () => {
               <form onSubmit={handleSubmit}>
                 <FormInput required type='email' name='email' label='Email Address' inputValue={email} onInputChange={onInputChange} />
                 <ButtonContainer>
-                  <Button type='submit' colorScheme='teal' size='lg' isLoading={appState.isLoading}>Search</Button>
+                  <Button type='submit' colorScheme='teal' size='lg' isLoading={authState.isAuthLoading}>Search</Button>
                 </ButtonContainer>
               </form>
             </CardBody>
