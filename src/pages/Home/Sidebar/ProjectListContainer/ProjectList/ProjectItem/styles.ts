@@ -1,3 +1,4 @@
+import { theme } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 export const ProjectListItem = styled.button<{ selected: boolean }>`
@@ -10,14 +11,16 @@ export const ProjectListItem = styled.button<{ selected: boolean }>`
   flex-flow: row nowrap;
   justify-content: space-between;
   alignt-items: center;
+  border-top-right-radius: .8rem;
+  border-bottom-right-radius: .8rem;
+  background-color: ${props => props.selected ? theme.colors.gray[200] : 'initial'};
+  font-weight: ${props => props.selected ? 'bold' : 'initial'};
   
   &:hover {
-    background-color: #e9ecef;
+    background-color: ${props => props.selected ? theme.colors.gray[200] : theme.colors.gray[100]};
   }
   
   &:focus {
-    background-color: #e9ecef;
+    background-color: ${props => props.selected ? theme.colors.gray[200] : theme.colors.gray[100]};
   }
-  
-  background-color: ${props => props.selected ? '#e9ecef' : 'initial'}
 `;

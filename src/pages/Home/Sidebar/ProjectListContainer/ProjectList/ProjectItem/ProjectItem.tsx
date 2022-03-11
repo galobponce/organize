@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, FormEvent } from 'react';
 
 import { ProjectListItem } from './styles';
 import { cutString } from '../../../../../../utils/StringUtils';
@@ -13,7 +13,8 @@ const ProjectItem: FC<{ project: Project }> = ({ project }) => {
   const { setDisplayMobileSidebar } = useAppContext();
   const { projectState, selectProject } = useProjectContext();
 
-  const handleClick = () => {
+  const handleClick = (e: FormEvent) => {
+    e.stopPropagation();
     if (!project.id) return;
     selectProject(project.id);
     fetchTasksByProject(project.id);
