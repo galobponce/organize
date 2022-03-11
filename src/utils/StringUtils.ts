@@ -1,0 +1,1 @@
+export const cutString = (str: string, len: number) => str.length > len ? str.substring(0, len).concat('...') : str

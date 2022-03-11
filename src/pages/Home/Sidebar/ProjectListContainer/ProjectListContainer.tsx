@@ -20,7 +20,7 @@ const ProjectListContainer: FC = () => {
           <FontAwesomeIcon color='inherit' size='sm' icon={faAdd}></FontAwesomeIcon>
         </Button>
       </SubtitleContainer>
-      {/* <ProjectList /> */}
+      <ProjectList />
     </>
   );
 }

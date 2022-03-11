@@ -1,11 +1,12 @@
 import { FC } from 'react';
+import { Divider } from '@chakra-ui/react';
 
 import UserIcon from '../UserIcon/UserIcon';
+import { Logo } from '../../../common/styles';
 import CloseSidebarButton from './CloseSidebarButton';
 import { Container, UserIconContainer } from './styles';
 import ProjectListContainer from './ProjectListContainer';
 import { useAppContext } from '../../../hooks/useAppContext';
-import { Logo, VerticalEmptySeparator } from '../../../common/styles';
 
 const Sidebar: FC = () => {
   const { appState } = useAppContext();
@@ -15,7 +16,7 @@ const Sidebar: FC = () => {
       <div>
         <CloseSidebarButton />
         <Logo>Organize</Logo>
-        <VerticalEmptySeparator size='xl'/>
+        <Divider mt={2} mb={8} />
         <ProjectListContainer />
       </div>
       <UserIconContainer>

@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react';
-import { List, ListItem } from '@chakra-ui/react';
+import { List } from '@chakra-ui/react';
 
+import ProjectItem from './ProjectItem';
 import { useProjectContext } from '../../../../../hooks/useProjectContext';
 
 const ProjectList: FC = () => {
@@ -11,10 +12,10 @@ const ProjectList: FC = () => {
   }, []);
 
   return (
-    <List spacing={3}>
+    <List mt={1}>
       { 
         projectState.projects.map((project) => (
-          <ListItem key={project.id}>{project.name}</ListItem>
+          <ProjectItem key={project.id} project={project} />
         )) 
       }
     </List>
