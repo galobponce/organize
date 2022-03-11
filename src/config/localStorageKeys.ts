@@ -1,0 +1,1 @@
+export const userIdKey = `${process.env.REACT_APP_FIREBASE_PROJECT_ID}_user_id`;

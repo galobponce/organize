@@ -2,10 +2,8 @@ import { ElementType, FC } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import routes from '../routes';
-import { useAuthContext } from '../hooks/useAuthContext';
+import { userIdKey } from '../config/localStorageKeys';
 
-export const PrivateRoute: FC<{ component: ElementType }> = ({ component: Component }) => {
-  const { authState } = useAuthContext();
-
-  return authState.currentUser ? <Component /> : <Navigate to={routes.LOGIN} />;
-};
+export const PrivateRoute: FC<{ component: ElementType }> = ({ component: Component }) => (
+  localStorage.getItem(userIdKey) ? <Component /> : <Navigate to={routes.LOGIN} />
+);
