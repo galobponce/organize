@@ -1,6 +1,6 @@
-import { FC, useReducer } from 'react';
+import { FC, useReducer, useEffect } from 'react';
 
-import { useAuthContext } from '../../hooks/useAuthContext';
+import { userIdKey } from '../../config/localStorageKeys';
 import { Task, TaskContext, TaskState } from './TaskContext';
 import { taskReducer, TaskReducerActions } from './taskReducer';
 import { useProjectContext } from '../../hooks/useProjectContext';
@@ -10,7 +10,8 @@ const INITIAL_STATE: TaskState = {
   tasks: [],
   selectedProjectTasks: [],
   selectedTask: { } as Task,
-  displayTaskFormModal: false
+  displayTaskFormModal: false,
+  isTaskLoading: false
 };
 
 interface IChildrenProps {
@@ -21,16 +22,29 @@ export const TaskProvider: FC<IChildrenProps> = ({ children }) => {
   const [taskState, taskDispatch] = useReducer(taskReducer, INITIAL_STATE);
   const { projectState } = useProjectContext();
 
+  useEffect(() => {
+    if (!projectState.selectedProject.id) return;
+    fetchTasksByProject(projectState.selectedProject.id);
+  }, [projectState.selectedProject]);
+
   const fetchTasksByProject = async (project_id: string) => {
-    const tasks = await QueryUserTasksByProject(project_id, localStorage.getItem("userToken") || "");
+    const userId = localStorage.getItem(userIdKey);
+    if (!userId) return; //TODO: throw error;
+    const tasks = await QueryUserTasksByProject(project_id, userId );
     taskDispatch({ type: TaskReducerActions.SET, payload: tasks });
   };
 
+  const setTaskLoading = (bool: boolean) => {
+    taskDispatch({ type: TaskReducerActions.SET_LOADING, payload: { bool } });
+  };
+
   const addTask = async (name: string, done: boolean, description?: string, due_date?: Date) => {
+    const userId = localStorage.getItem(userIdKey);
+    if (!userId) return; //TODO: throw error;
     const newTask: Task = {
       name,
       description,
-      user: localStorage.getItem("userToken") || "",
+      user: userId,
       creation_date: new Date,
       due_date,
       project_id: projectState.selectedProject.id,
@@ -72,7 +86,8 @@ export const TaskProvider: FC<IChildrenProps> = ({ children }) => {
       selectTask,
       deselectTask,
       modifyTask,
-      setDisplayTaskFormModal
+      setDisplayTaskFormModal,
+      setTaskLoading
     }}>
       { children }
     </TaskContext.Provider>

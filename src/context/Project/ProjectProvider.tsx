@@ -1,10 +1,9 @@
-import { FC, useEffect, useReducer } from 'react';
+import { FC, useReducer } from 'react';
 
 import { userIdKey } from '../../config/localStorageKeys';
 import { Project, ProjectContext, ProjectState } from './ProjectContext';
 import { projectReducer, ProjectReducerActions } from './projectReducer';
 import { QueryUserProjects, AddProject, DeleteProject } from '../../utils/FirebaseUtils';
-import { useAuthContext } from '../../hooks/useAuthContext';
 
 const INITIAL_STATE: ProjectState = {
   projects: [],

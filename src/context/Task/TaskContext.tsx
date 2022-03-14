@@ -20,6 +20,7 @@ export interface ITaskContext {
   deselectTask: () => void;
   modifyTask: (task: Task) => void;
   setDisplayTaskFormModal: (bool: boolean) => void;
+  setTaskLoading: (bool: boolean) => void;
 };
 
 export interface TaskState {
@@ -27,6 +28,7 @@ export interface TaskState {
   selectedProjectTasks: Task[];
   selectedTask: Task;
   displayTaskFormModal: boolean;
+  isTaskLoading: boolean;
 };
 
 export const TaskContext = createContext<ITaskContext>({} as ITaskContext);

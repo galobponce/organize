@@ -7,7 +7,9 @@ export type TaskReducerAction =
   | { type: TaskReducerActions.SELECT, payload: { id: string } }
   | { type: TaskReducerActions.DESELECT, payload: null }
   | { type: TaskReducerActions.MODIFY, payload: Task }
-  | { type: TaskReducerActions.SET_DISPLAY_TASK_FORM_MODAL, payload: { bool: boolean } };
+  | { type: TaskReducerActions.SET_DISPLAY_TASK_FORM_MODAL, payload: { bool: boolean } }
+  | { type: TaskReducerActions.SET_LOADING, payload: { bool: boolean } };
+
 
 export enum TaskReducerActions {
   'SET',
@@ -16,7 +18,8 @@ export enum TaskReducerActions {
   'DELETE',
   'SELECT',
   'DESELECT',
-  'SET_DISPLAY_TASK_FORM_MODAL'
+  'SET_DISPLAY_TASK_FORM_MODAL',
+  'SET_LOADING'
 };
 
 export const taskReducer = (state: TaskState, action: TaskReducerAction): TaskState => {
@@ -26,6 +29,12 @@ export const taskReducer = (state: TaskState, action: TaskReducerAction): TaskSt
         ...state,
         tasks: action.payload,
       }
+
+    case TaskReducerActions.SET_LOADING:
+      return {
+        ...state,
+        isTaskLoading: action.payload.bool
+      };
 
     case TaskReducerActions.ADD:
       return {
