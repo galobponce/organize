@@ -1,4 +1,4 @@
-import { FC, FormEvent } from 'react';
+import { FC, FormEvent, useEffect } from 'react';
 import { theme, useToast } from '@chakra-ui/react';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,16 +6,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ProjectListItemTrashIcon } from './styles';
 import { useAppContext } from '../../../../../../../hooks/useAppContext';
 import { useProjectContext } from '../../../../../../../hooks/useProjectContext';
-import { getMessageFromError } from '../../../../../../../utils/ErrorUtils';
 
 const ProjectItemTrashIcon: FC<{ projectId: string }> = ({ projectId }) => {
   const toast = useToast();
-  const { setCustomModalState } = useAppContext();
-  const { projectState, deleteProject, setProjectLoading } = useProjectContext();
+  const { appState, setCustomModalState } = useAppContext();
+  const { projectState, deleteProject } = useProjectContext();
 
+  // Reset state when project loading changes so modal renders button loading
+  useEffect(() => {
+    setCustomModalState({ ...appState.customModalState, isModalLoading: projectState.isProjectLoading });
+  }, [projectState.isProjectLoading])
+
+  // Handling click also when pressing enter
   const handleKeyUp = (e: { which: number }) => {
     if (e.which === 13 || e.which === 32) {
-      handleClick({ stopPropagation: () => {} } as FormEvent);
+      handleClick({ stopPropagation: () => {} } as FormEvent); // Sends empty function so dont breaks
     }
   };
 
@@ -25,31 +30,19 @@ const ProjectItemTrashIcon: FC<{ projectId: string }> = ({ projectId }) => {
       { 
         display: true, 
         title: 'Warning!',
-        text: 'Are you sure you want to delete this project?',
-        confirmationText: 'Yes',
+        text: 'Delete this project?',
+        confirmationText: 'Delete',
         cancelText: 'Cancel',
+        isModalLoading: projectState.isProjectLoading,
         confirmationCallback: async () => {
-          try {
-            setProjectLoading(true);
-            await deleteProject(projectId); 
-            toast({
-              title: 'Project Deleted',
-              position: 'top-right', 
-              status: 'success', 
-              isClosable: true
-            }); 
-          } catch (err: any) {
-            toast({
-              title: getMessageFromError(err),
-              position: 'top-right',
-              status: 'error',
-              isClosable: true,
-            });
-          } finally {
-            setProjectLoading(false);
-          }
-        },
-        isModalLoading: projectState.isProjectLoading
+          await deleteProject(projectId); 
+          toast({
+            title: 'Project Deleted',
+            position: 'top-right', 
+            status: 'success', 
+            isClosable: true
+          });
+        }
       }
     );
   };

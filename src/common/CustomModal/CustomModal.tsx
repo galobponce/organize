@@ -28,19 +28,19 @@ const CustomModal: FC = () => {
 
   return (
     <Modal isOpen={display} onClose={hideCustomModal} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{title}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody textAlign={'center'}>
-            {text}
-          </ModalBody>
-          <ModalFooter>
-            <Button isLoading={isModalLoading} onClick={handleConfirmation} mr={3} colorScheme='red'>{confirmationText}</Button>
-            <Button onClick={hideCustomModal} variant='ghost'>{cancelText}</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>{title}</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody textAlign='left'>
+          {text}
+        </ModalBody>
+        <ModalFooter>
+          <Button isLoading={isModalLoading} onClick={handleConfirmation} mr={3} colorScheme='red'>{confirmationText}</Button>
+          <Button onClick={hideCustomModal} colorScheme='gray'>{cancelText}</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 
