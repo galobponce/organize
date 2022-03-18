@@ -28,10 +28,12 @@ export const TaskProvider: FC<IChildrenProps> = ({ children }) => {
   }, [projectState.selectedProject]);
 
   const fetchTasksByProject = async (project_id: string) => {
+    setTaskLoading(true);
     const userId = localStorage.getItem(userIdKey);
     if (!userId) return; //TODO: throw error;
     const tasks = await QueryUserTasksByProject(project_id, userId );
     taskDispatch({ type: TaskReducerActions.SET, payload: tasks });
+    setTaskLoading(false);
   };
 
   const setTaskLoading = (bool: boolean) => {
@@ -39,6 +41,7 @@ export const TaskProvider: FC<IChildrenProps> = ({ children }) => {
   };
 
   const addTask = async (name: string, done: boolean, description?: string, due_date?: Date) => {
+    setTaskLoading(true);
     const userId = localStorage.getItem(userIdKey);
     if (!userId) return; //TODO: throw error;
     const newTask: Task = {
@@ -53,11 +56,14 @@ export const TaskProvider: FC<IChildrenProps> = ({ children }) => {
     const createdTaskId = await AddTask(newTask);
     const createdTask: Task = { id: createdTaskId, ...newTask };
     taskDispatch({ type: TaskReducerActions.ADD, payload: createdTask });
+    setTaskLoading(false);
   };
 
   const deleteTask = async (id: string) => {
+    setTaskLoading(true);
     await DeleteTask(id);
     taskDispatch({ type: TaskReducerActions.DELETE, payload: { id } });
+    setTaskLoading(false);
   };
 
   const selectTask = (id: string) => {
@@ -69,8 +75,10 @@ export const TaskProvider: FC<IChildrenProps> = ({ children }) => {
   };
 
   const modifyTask = async (task: Task) => {
+    setTaskLoading(true);
     await ModifyTask(task);
     taskDispatch({ type: TaskReducerActions.MODIFY, payload: task });
+    setTaskLoading(false);
   };
 
   const setDisplayTaskFormModal = (bool: boolean) => {

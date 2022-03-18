@@ -13,7 +13,7 @@ import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles
 const Login: FC = () => {
   const toast = useToast();
   const navitage = useNavigate();
-  const { authState, signInWithEmailAndPassword, logOut, setAuthLoading } = useAuthContext();
+  const { authState, signInWithEmailAndPassword, logOut } = useAuthContext();
 
   const [formValues, onInputChange] = useForm({
     email: '',
@@ -29,7 +29,6 @@ const Login: FC = () => {
     e.preventDefault();
 
     try {
-      setAuthLoading(true);
       await signInWithEmailAndPassword(email, password);
       toast({
         title: 'User Logged In Successfully',
@@ -45,8 +44,6 @@ const Login: FC = () => {
         status: 'error',
         isClosable: true,
       });
-    } finally {
-      setAuthLoading(false);
     }
   };
 

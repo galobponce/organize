@@ -20,10 +20,12 @@ export const ProjectProvider: FC<IChildrenProps> = ({ children }) => {
   const [projectState, projectDispatch] = useReducer(projectReducer, INITIAL_STATE);
 
   const fetchUserProjects = async () => {
+    setProjectLoading(true);
     const userId = localStorage.getItem(userIdKey);
     if (!userId) return; //TODO: throw error;
     const projects = await QueryUserProjects(userId);
     projectDispatch({ type: ProjectReducerActions.FETCH, payload: projects });
+    setProjectLoading(false);
   };
 
   const setProjectLoading = (bool: boolean) => {
@@ -31,17 +33,21 @@ export const ProjectProvider: FC<IChildrenProps> = ({ children }) => {
   };
 
   const addProject = async (name: string) => {
+    setProjectLoading(true);
     const userId = localStorage.getItem(userIdKey);
     if (!userId) return; //TODO: throw error;
     const newProject: Project = { name, user: userId };
     const createdProjectId = await AddProject(newProject);
     const createdProject: Project = { id: createdProjectId, ...newProject };
     projectDispatch({ type: ProjectReducerActions.ADD, payload: createdProject });
+    setProjectLoading(false);
   };
 
   const deleteProject = async (id: string) => {
+    setProjectLoading(true);
     await DeleteProject(id);
     projectDispatch({ type: ProjectReducerActions.DELETE, payload: { id } });
+    setProjectLoading(false);
   };
 
   const selectProject = (id: string) => {

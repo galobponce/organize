@@ -34,25 +34,34 @@ export const AuthProvider: FC<IChildrenProps> = ({ children }) => {
 
   const signInWithEmailAndPassword = async (email: string, password: string) => {
     try {
+      setAuthLoading(true);
       await firebaseSignInWithEmailAndPassword(auth, email, password);
     } catch(err) {
       throw err;
+    } finally {
+      setAuthLoading(false);
     }
   };
 
   const registerWithEmailAndPassword = async (email: string, password: string) => {
     try {
+      setAuthLoading(true);
       await firebaseRegisterWithEmailAndPassword(auth, email, password);
     } catch(err) {
       throw err;
+    } finally {
+      setAuthLoading(false);
     }
   };
 
   const sendPasswordResetByEmail = async (email: string) => {
     try {
+      setAuthLoading(true);
       await firebaseSendPasswordResetEmail(auth, email);      
     } catch(err) {
       throw err;
+    } finally {
+      setAuthLoading(false);
     }
   };
   

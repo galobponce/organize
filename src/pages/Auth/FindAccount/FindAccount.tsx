@@ -15,7 +15,7 @@ import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles
 const FindAccount: FC = () => {
   const toast = useToast();
   const [emailSent, setEmailSent] = useState(false);
-  const { authState, sendPasswordResetByEmail, logOut, setAuthLoading } = useAuthContext();
+  const { authState, sendPasswordResetByEmail, logOut } = useAuthContext();
 
   const [formValues, onInputChange] = useForm({
     email: '',
@@ -30,7 +30,6 @@ const FindAccount: FC = () => {
     e.preventDefault();
 
     try {
-      setAuthLoading(true);
       await sendPasswordResetByEmail(email);
       setEmailSent(true);
     } catch(err: any) {
@@ -40,8 +39,6 @@ const FindAccount: FC = () => {
         status: 'error',
         isClosable: true,
       });
-    } finally {
-      setAuthLoading(false);
     }
   }
 

@@ -13,7 +13,7 @@ import { Container, Card, CardTitle, CardBody, ButtonContainer } from '../styles
 const Register: FC = () => {
   const toast = useToast();
   const navitage = useNavigate();
-  const { authState, registerWithEmailAndPassword, logOut, setAuthLoading } = useAuthContext();
+  const { authState, registerWithEmailAndPassword, logOut } = useAuthContext();
 
   const [formValues, onInputChange] = useForm({
     email: '',
@@ -30,7 +30,6 @@ const Register: FC = () => {
     e.preventDefault();
 
     try {
-      setAuthLoading(true);
       if (password !== repeatedPassword) throw { code: authErrors.WRONG_PASSWORD };
       await registerWithEmailAndPassword(email, password);
       toast({
@@ -47,8 +46,6 @@ const Register: FC = () => {
         status: 'error',
         isClosable: true,
       });
-    } finally {
-      setAuthLoading(false);
     }
   };
 
