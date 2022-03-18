@@ -1,20 +1,21 @@
-import { FC, FormEvent } from 'react';
+import { FC } from 'react';
+import { useDisclosure } from '@chakra-ui/react';
 
 import ProjectList from './ProjectList';
 import { SubtitleContainer } from '../styles';
+import NewEditProjectModal from '../../NewEditProjectModal';
 import PlusButton from '../../../../common/PlusButton/PlusButton';
 import ProjectListTitleWithIcon from './ProjectListContainerTitleWithIcon';
 
 const ProjectListContainer: FC = () => {
-  const handleAddClick = (e: FormEvent) => {
-    e.stopPropagation();
-  };
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
     <>
+      <NewEditProjectModal type='N' isOpen={isOpen} onClose={onClose}/>
       <SubtitleContainer>
         <ProjectListTitleWithIcon />
-        <PlusButton func={handleAddClick} />
+        <PlusButton func={onOpen} />
       </SubtitleContainer>
       <ProjectList />
     </>
