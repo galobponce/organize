@@ -6,17 +6,19 @@ import { cutString } from '../../../utils/StringUtils';
 import { SmallTitle, BigTitle } from '../../../common/styles';
 import PlusButton from '../../../common/PlusButton/PlusButton';
 import { useTaskContext } from '../../../hooks/useTaskContext';
+import NewEditTaskModal from '../NewEditTaskModal/NewEditTaskModal';
 import { useProjectContext } from '../../../hooks/useProjectContext';
 import { Container, BackButtonWithTitle, BackButtonContainer, TitleContainer, ChildContainer, SubtitleContainer } from './styles';
 
 const TaskListContainer: FC = () => {
-  const { taskState } = useTaskContext();
+  const { taskState, setDisplayTaskFormModal } = useTaskContext();
   const { projectState, deselectProject } = useProjectContext();
   
   if (!projectState.selectedProject.id) return null;
 
   return (
     <Container>
+      <NewEditTaskModal />
       <BackButtonWithTitle>
         <BackButtonContainer>
           <BackButton func={deselectProject} />
@@ -28,7 +30,7 @@ const TaskListContainer: FC = () => {
       <ChildContainer>
         <SubtitleContainer>
           <SmallTitle>{ taskState.tasks.length ? 'Tasks' : 'No Tasks Yet' }</SmallTitle>
-          <PlusButton func={() => {}} />
+          <PlusButton func={() => setDisplayTaskFormModal(true)} />
         </SubtitleContainer>
         <TaskList />
       </ChildContainer>

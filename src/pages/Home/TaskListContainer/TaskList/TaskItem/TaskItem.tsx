@@ -11,11 +11,13 @@ import { getMessageFromError } from '../../../../../utils/ErrorUtils';
 
 const TaskItem: FC<{ task: Task }> = ({ task }) => {
   const toast = useToast();
-  const { taskState, setTaskLoading, deleteTask } = useTaskContext();
+  const { taskState, setTaskLoading, deleteTask, selectTask, setDisplayTaskFormModal } = useTaskContext();
   const { setCustomModalState } = useAppContext();
 
   const handleEditClick = () => {
-
+    if (!task.id) return;
+    selectTask(task.id);
+    setDisplayTaskFormModal(true);
   };
 
   const handleDeleteClick = async () => {
@@ -54,7 +56,7 @@ const TaskItem: FC<{ task: Task }> = ({ task }) => {
   };
 
   return (
-    <TaskListItem>
+    <TaskListItem role='listitem'>
       {cutString(task.name, 40)}
       <TaskItemIcons edit={handleEditClick} delete={handleDeleteClick} />
     </TaskListItem>
