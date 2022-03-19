@@ -13,19 +13,11 @@ import {
 
 import { useForm } from '../../../hooks/useForm';
 import FormInput from '../../../common/FormInput';
-import { Project } from '../../../context/Project/ProjectContext';
 import { useProjectContext } from '../../../hooks/useProjectContext';
 
-export interface INewEditProjectModal {
-  type: 'N' | 'E';
-  project?: Project;
-  isOpen: boolean;
-  onClose: () => void;
-};
-
-const NewEditProjectModal: FC<INewEditProjectModal> = ({ type, isOpen, onClose }) => {
+const NewEditProjectModal: FC = () => {
   const toast = useToast();
-  const { projectState, addProject, setProjectLoading } = useProjectContext();
+  const { projectState, addProject, setDisplayProjectFormModal } = useProjectContext();
 
   const [formValues, onInputChange] = useForm({
     name: ''
@@ -43,7 +35,7 @@ const NewEditProjectModal: FC<INewEditProjectModal> = ({ type, isOpen, onClose }
       return;
     }
 
-    if (type === 'N') {
+    if (!projectState.selectedProject.id) {
       await addProject(name);
       toast({
         title: 'Project Created',
@@ -53,14 +45,18 @@ const NewEditProjectModal: FC<INewEditProjectModal> = ({ type, isOpen, onClose }
       });
     }
 
-    onClose();
+    handleClose();
+  };
+
+  const handleClose = () => {
+    setDisplayProjectFormModal(false);
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={projectState.displayProjectFormModal} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{ type === 'N' ? 'New' : 'Edit' } Project</ModalHeader>
+        <ModalHeader>{ !projectState.selectedProject ? 'New' : 'Edit' } Project</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
@@ -69,9 +65,9 @@ const NewEditProjectModal: FC<INewEditProjectModal> = ({ type, isOpen, onClose }
 
         <ModalFooter>
           <Button isLoading={projectState.isProjectLoading} colorScheme='teal' onClick={handleClick} mr={3}>
-            { type === 'N' ? 'Create' : 'Edit' }
+            { !projectState.selectedProject ? 'Create' : 'Edit' }
           </Button>
-          <Button colorScheme='gray' onClick={onClose}>Cancel</Button>
+          <Button colorScheme='gray' onClick={handleClose}>Cancel</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

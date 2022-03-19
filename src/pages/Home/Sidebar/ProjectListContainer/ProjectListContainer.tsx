@@ -1,21 +1,21 @@
 import { FC } from 'react';
-import { useDisclosure } from '@chakra-ui/react';
 
 import ProjectList from './ProjectList';
 import { SubtitleContainer } from '../styles';
 import NewEditProjectModal from '../../NewEditProjectModal';
 import PlusButton from '../../../../common/PlusButton/PlusButton';
+import { useProjectContext } from '../../../../hooks/useProjectContext';
 import ProjectListTitleWithIcon from './ProjectListContainerTitleWithIcon';
 
 const ProjectListContainer: FC = () => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { setDisplayProjectFormModal } = useProjectContext();
 
   return (
     <>
-      <NewEditProjectModal type='N' isOpen={isOpen} onClose={onClose}/>
+      <NewEditProjectModal />
       <SubtitleContainer>
         <ProjectListTitleWithIcon />
-        <PlusButton func={onOpen} />
+        <PlusButton func={() => setDisplayProjectFormModal(true)} />
       </SubtitleContainer>
       <ProjectList />
     </>
