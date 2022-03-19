@@ -4,11 +4,11 @@ import { Input, FormControl, FormLabel } from '@chakra-ui/react';
 import { InputWrapper } from './styles';
 
 interface IFormInput {
-  required: boolean;
+  required?: boolean;
   type: string;
   name: string;
   label: string;
-  inputValue: string;
+  inputValue: any;
   onInputChange: (e: any) => void;
 };
 
