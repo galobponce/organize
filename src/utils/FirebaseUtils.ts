@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, Timestamp, where } from 'firebase/firestore';
 
 import { Task } from '../context/Task/TaskContext';
 import { firestore } from '../config/firebase.config';
@@ -11,7 +11,16 @@ export const QueryUserProjects = async (user: string): Promise<Project[]> => {
 
 export const QueryUserTasksByProject = async (project_id: string, user: string): Promise<Task[]> => {
   const data = await getDocs(query(collection(firestore, 'tasks'), where('user', '==', user), where('project_id', '==', project_id)));
-  return data.docs.map(doc => ({ ...{ id: doc.id, ...doc.data() } } as Task));
+  return data.docs.map(doc => (
+    { 
+      ...{
+        id: doc.id, 
+        ...doc.data(), 
+        creation_date: doc.data().creation_date.toDate(), 
+        due_date: doc.data().due_date ? (doc.data().due_date.toDate ? doc.data().due_date.toDate() : null) : null
+      } 
+    } as Task
+  ));
 };
 
 export const AddProject = async (project: Project): Promise<string> => {
@@ -33,7 +42,7 @@ export const AddTask = async (task: Task): Promise<string> => {
     user: task.user,
     project_id: task.project_id,
     creation_date: task.creation_date,
-    due_date: task.due_date,
+    due_date: task.due_date ? Timestamp.fromDate(task.due_date) : null,
     done: task.done
   });
   return docRef.id;
@@ -45,5 +54,5 @@ export const DeleteTask = async (task_id: string): Promise<void> => {
 
 export const ModifyTask = async (task: Task): Promise<void> => {
   if (!task.id) return;
-  await setDoc(doc(firestore, 'tasks', task.id), task);
+  await setDoc(doc(firestore, 'tasks', task.id), { ...task, due_date: task.due_date ? Timestamp.fromDate(task.due_date) : null});
 };
