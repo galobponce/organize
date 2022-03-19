@@ -23,6 +23,7 @@ const ProjectItem: FC<{ project: Project }> = ({ project }) => {
 
   return (
     <ProjectListItem 
+      role='listitem'
       onClick={handleClick}
       selected={projectState.selectedProject.id === project.id}>
       
