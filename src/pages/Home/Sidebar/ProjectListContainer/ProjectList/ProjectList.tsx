@@ -2,6 +2,8 @@ import { FC, useEffect } from 'react';
 import { List } from '@chakra-ui/react';
 
 import ProjectItem from './ProjectItem';
+import LoaderSmall from '../../../../../common/LoaderSmall';
+import { LoaderSmallContainer } from '../../../../../common/styles';
 import { useProjectContext } from '../../../../../hooks/useProjectContext';
 
 const ProjectList: FC = () => {
@@ -10,6 +12,14 @@ const ProjectList: FC = () => {
   useEffect(() => {
     fetchUserProjects();
   }, []);
+
+  if (projectState.isProjectLoading) {
+    return (
+      <LoaderSmallContainer>
+        <LoaderSmall />
+      </LoaderSmallContainer>
+    );
+  }
 
   return (
     <List mt={1}>

@@ -1,0 +1,1 @@
+export const getLoaderSmall = `${process.env.PUBLIC_URL}/loader-small.svg`;

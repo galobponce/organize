@@ -1,5 +1,6 @@
 import { theme } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import LoaderSmall from './LoaderSmall/LoaderSmall';
 
 export const blackGrayColored = styled.h1`
   color: ${theme.colors.gray[600]};
@@ -42,4 +43,12 @@ export const InputWrapper = styled.div`
 
 export const VerticalEmptySeparator = styled.div<{ size: 'sm' | 'xl' }>`
   margin-top: ${props => props.size === 'sm' ? '1rem' : '3rem'};
+`;
+
+export const LoaderSmallContainer = styled.div`
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
