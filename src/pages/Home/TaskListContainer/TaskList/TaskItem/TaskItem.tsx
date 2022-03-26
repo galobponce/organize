@@ -1,7 +1,6 @@
 import { FC } from 'react';
-import { useToast } from '@chakra-ui/react';
+import { Td, Tr, useToast } from '@chakra-ui/react';
 
-import { TaskListItem } from './styles';
 import TaskItemIcons from './TaskItemIcons';
 import { cutString } from '../../../../../utils/StringUtils';
 import { Task } from '../../../../../context/Task/TaskContext';
@@ -56,10 +55,11 @@ const TaskItem: FC<{ task: Task }> = ({ task }) => {
   };
 
   return (
-    <TaskListItem role='listitem'>
-      {cutString(task.name, 40)}
-      <TaskItemIcons edit={handleEditClick} delete={handleDeleteClick} />
-    </TaskListItem>
+    <Tr>
+      <Td>{cutString(task.name, 40)}</Td>
+      <Td>{task.due_date?.toString() || 'None'}</Td>
+      <Td><TaskItemIcons edit={handleEditClick} delete={handleDeleteClick} /></Td>
+    </Tr>
   );
 };
 

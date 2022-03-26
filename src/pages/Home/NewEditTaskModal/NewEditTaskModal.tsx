@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { ChangeEvent, FC, useEffect } from 'react';
 import { 
   Button,
   Checkbox,
@@ -36,7 +36,8 @@ const NewEditTaskModal: FC = () => {
       ...formValues,
       name: taskState.selectedTask.name,
       description: taskState.selectedTask.description || '',
-      due_date: taskState.selectedTask.due_date ? new Date(taskState.selectedTask.due_date) : new Date()
+      due_date: taskState.selectedTask.due_date ? new Date(taskState.selectedTask.due_date) : new Date(),
+      done: taskState.selectedTask.done
     });
   }, [taskState.selectedTask]);
 
@@ -78,6 +79,13 @@ const NewEditTaskModal: FC = () => {
     setDisplayTaskFormModal(false);
   };
 
+  const onChangeCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
+    setValues({
+      ...formValues,
+      done: e.target.checked
+    });
+  }
+
   return (
     <Modal isOpen={taskState.displayTaskFormModal} onClose={handleClose}>
       <ModalOverlay />
@@ -89,7 +97,7 @@ const NewEditTaskModal: FC = () => {
           <FormInput type="text" name="name" label="Name" inputValue={name} onInputChange={onInputChange} required />
           <FormTextArea name="description" label="Description" inputValue={description} onInputChange={onInputChange}/>
           <FormInput type="date" name="due_date" label="Due Date" inputValue={due_date.toISOString ? due_date.toISOString().split('T')[0] : due_date} onInputChange={onInputChange} />
-          <Checkbox mt={2} checked={done} onChange={onInputChange}>Done</Checkbox>
+          <Checkbox mt='2' type='checkbox' id='done' name='done' defaultChecked={done} checked={done} onChange={onChangeCheckbox}>Done</Checkbox>
         </ModalBody>
 
         <ModalFooter>
