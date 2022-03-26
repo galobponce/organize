@@ -4,7 +4,7 @@ import { userIdKey } from '../../config/localStorageKeys';
 import { Task, TaskContext, TaskState } from './TaskContext';
 import { taskReducer, TaskReducerActions } from './taskReducer';
 import { useProjectContext } from '../../hooks/useProjectContext';
-import { QueryUserTasksByProject, AddTask, DeleteTask, ModifyTask } from '../../utils/FirebaseUtils';
+import { QueryTasksByProject, AddTask, DeleteTask, ModifyTask } from '../../utils/FirebaseUtils';
 
 const INITIAL_STATE: TaskState = {
   tasks: [],
@@ -29,9 +29,7 @@ export const TaskProvider: FC<IChildrenProps> = ({ children }) => {
 
   const fetchTasksByProject = async (project_id: string) => {
     setTaskLoading(true);
-    const userId = localStorage.getItem(userIdKey);
-    if (!userId) return; //TODO: throw error;
-    const tasks = await QueryUserTasksByProject(project_id, userId );
+    const tasks = await QueryTasksByProject(project_id);
     taskDispatch({ type: TaskReducerActions.SET, payload: tasks });
     setTaskLoading(false);
   };

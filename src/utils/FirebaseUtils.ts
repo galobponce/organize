@@ -9,14 +9,14 @@ export const QueryUserProjects = async (user: string): Promise<Project[]> => {
   return data.docs.map(doc => ({ ...{ id: doc.id, ...doc.data() } } as Project));
 };
 
-export const QueryUserTasksByProject = async (project_id: string, user: string): Promise<Task[]> => {
-  const data = await getDocs(query(collection(firestore, 'tasks'), where('user', '==', user), where('project_id', '==', project_id)));
+export const QueryTasksByProject = async (project_id: string): Promise<Task[]> => {
+  const data = await getDocs(query(collection(firestore, 'tasks'), where('project_id', '==', project_id)));
   return data.docs.map(doc => (
     { 
       ...{
         id: doc.id, 
-        ...doc.data(), 
-        creation_date: doc.data().creation_date.toDate(), 
+        ...doc.data(), // Checks if has Timestamp and that Timestamp has toDate method
+        creation_date: doc.data().creation_date ? (doc.data().creation_date.toDate ? doc.data().creation_date.toDate() : null) : null,
         due_date: doc.data().due_date ? (doc.data().due_date.toDate ? doc.data().due_date.toDate() : null) : null
       } 
     } as Task
