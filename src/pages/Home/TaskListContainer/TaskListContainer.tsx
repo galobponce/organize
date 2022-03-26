@@ -30,7 +30,7 @@ const TaskListContainer: FC = () => {
       </BackButtonWithTitle>
       <ChildContainer>
         <SubtitleContainer>
-          <Skeleton isLoaded={!taskState.isTaskLoading}>
+          <Skeleton isLoaded={!taskState.isTaskLoading} textAlign='left' width='9rem'>
             <SmallTitle>{ taskState.tasks.length ? 'Tasks' : 'No Tasks Yet' }</SmallTitle>
           </Skeleton>
           <PlusButton func={() => setDisplayTaskFormModal(true)} />
