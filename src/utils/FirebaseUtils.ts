@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, Timestamp, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, Timestamp, where, writeBatch } from 'firebase/firestore';
 
 import { Task } from '../context/Task/TaskContext';
 import { firestore } from '../config/firebase.config';
@@ -32,7 +32,16 @@ export const AddProject = async (project: Project): Promise<string> => {
 };
 
 export const DeleteProject = async (project_id: string): Promise<void> => {
-  await deleteDoc(doc(firestore, 'projects', project_id));
+  const data = await getDocs(query(collection(firestore, 'tasks'), where('project_id', '==', project_id)));
+  
+  // Transaction to delete a project and all its tasks
+  const batch = writeBatch(firestore);
+  data.forEach(doc => {
+    batch.delete(doc.ref);
+  });
+  batch.delete(doc(firestore, 'projects', project_id));
+
+  await batch.commit();
 };
 
 export const AddTask = async (task: Task): Promise<string> => {
