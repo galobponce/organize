@@ -18,7 +18,7 @@ const TaskList: FC = () => {
   }
 
   return (
-    <Table marginTop='1rem' variant='simple'>
+    <Table marginTop='1rem' size='sm' variant='simple'>
       <Thead>
         <Tr>
           <Th>Name</Th>

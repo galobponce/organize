@@ -4,9 +4,10 @@ import { Td, Tr, useToast } from '@chakra-ui/react';
 import TaskItemIcons from './TaskItemIcons';
 import { cutString } from '../../../../../utils/StringUtils';
 import { Task } from '../../../../../context/Task/TaskContext';
-import { useTaskContext } from '../../../../../hooks/useTaskContext';
 import { useAppContext } from '../../../../../hooks/useAppContext';
+import { useTaskContext } from '../../../../../hooks/useTaskContext';
 import { getMessageFromError } from '../../../../../utils/ErrorUtils';
+import { getStringFromCustomDate } from '../../../../../utils/CustomDateUtils';
 
 const TaskItem: FC<{ task: Task }> = ({ task }) => {
   const toast = useToast();
@@ -57,7 +58,7 @@ const TaskItem: FC<{ task: Task }> = ({ task }) => {
   return (
     <Tr>
       <Td>{cutString(task.name, 40)}</Td>
-      <Td>{task.due_date?.toString() || 'None'}</Td>
+      <Td>{task.due_date && getStringFromCustomDate(task.due_date) || 'None'}</Td>
       <Td><TaskItemIcons edit={handleEditClick} delete={handleDeleteClick} /></Td>
     </Tr>
   );

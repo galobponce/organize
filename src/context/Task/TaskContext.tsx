@@ -1,12 +1,18 @@
 import { createContext } from 'react';
 
+export interface CustomDate {
+  year: number;
+  month: number;
+  day: number;
+}
+
 export interface Task {
   id?: string;
   name: string;
   description?: string;
   user: string;
-  creation_date: Date;
-  due_date?: Date;
+  creation_date: CustomDate;
+  due_date?: CustomDate | null;
   project_id?: string;
   done: boolean;
 };
@@ -14,7 +20,7 @@ export interface Task {
 export interface ITaskContext {
   taskState: TaskState;
   fetchTasksByProject: (project_id: string) => void;
-  addTask: (name: string, done: boolean, description?: string, due_date?: Date) => void;
+  addTask: (name: string, done: boolean, description?: string, due_date?: CustomDate | null) => void;
   deleteTask: (id: string) => void;
   selectTask: (id: string) => void;
   deselectTask: () => void;

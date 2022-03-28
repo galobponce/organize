@@ -16,6 +16,7 @@ import { useForm } from '../../../hooks/useForm';
 import FormInput from '../../../common/FormInput';
 import FormTextArea from '../../../common/FormTextArea';
 import { useTaskContext } from '../../../hooks/useTaskContext';
+import { getCustomDateFromString, getHTMLStringFromCustomDate } from '../../../utils/CustomDateUtils';
 
 const NewEditTaskModal: FC = () => {
   const toast = useToast();
@@ -24,7 +25,7 @@ const NewEditTaskModal: FC = () => {
   const [formValues, onInputChange, clearValues, setValues] = useForm({
     name: '',
     description: '',
-    due_date: new Date(),
+    due_date: '',
     done: false
   });
   const { name, description, due_date, done } = formValues;
@@ -36,7 +37,7 @@ const NewEditTaskModal: FC = () => {
       ...formValues,
       name: taskState.selectedTask.name,
       description: taskState.selectedTask.description || '',
-      due_date: taskState.selectedTask.due_date ? new Date(taskState.selectedTask.due_date) : new Date(),
+      due_date: taskState.selectedTask.due_date && getHTMLStringFromCustomDate(taskState.selectedTask.due_date) || '',
       done: taskState.selectedTask.done
     });
   }, [taskState.selectedTask]);
@@ -53,7 +54,7 @@ const NewEditTaskModal: FC = () => {
     }
 
     if (!taskState.selectedTask.id) {
-      await addTask(name, done, description, new Date(due_date));
+      await addTask(name, done, description, getCustomDateFromString(due_date, '-'));
       toast({
         title: 'Task Created',
         position: 'top-right', 
@@ -61,7 +62,7 @@ const NewEditTaskModal: FC = () => {
         isClosable: true
       });
     } else {
-      await modifyTask({ ...taskState.selectedTask, name, done, description, due_date: new Date(due_date) });
+      await modifyTask({ ...taskState.selectedTask, name, done, description, due_date: getCustomDateFromString(due_date, '-') });
       toast({
         title: 'Task Modified',
         position: 'top-right', 
@@ -96,7 +97,7 @@ const NewEditTaskModal: FC = () => {
         <ModalBody>
           <FormInput type="text" name="name" label="Name" inputValue={name} onInputChange={onInputChange} required />
           <FormTextArea name="description" label="Description" inputValue={description} onInputChange={onInputChange}/>
-          <FormInput type="date" name="due_date" label="Due Date" inputValue={due_date.toISOString ? due_date.toISOString().split('T')[0] : due_date} onInputChange={onInputChange} />
+          <FormInput type="date" name="due_date" label="Due Date" inputValue={due_date} onInputChange={onInputChange} />
           <Checkbox mt='2' type='checkbox' id='done' name='done' defaultChecked={done} checked={done} onChange={onChangeCheckbox}>Done</Checkbox>
         </ModalBody>
 

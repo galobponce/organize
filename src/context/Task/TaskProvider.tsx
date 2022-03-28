@@ -1,7 +1,7 @@
 import { FC, useReducer, useEffect } from 'react';
 
 import { userIdKey } from '../../config/localStorageKeys';
-import { Task, TaskContext, TaskState } from './TaskContext';
+import { Task, TaskContext, TaskState, CustomDate } from './TaskContext';
 import { taskReducer, TaskReducerActions } from './taskReducer';
 import { useProjectContext } from '../../hooks/useProjectContext';
 import { QueryTasksByProject, AddTask, DeleteTask, ModifyTask } from '../../utils/FirebaseUtils';
@@ -38,15 +38,16 @@ export const TaskProvider: FC<IChildrenProps> = ({ children }) => {
     taskDispatch({ type: TaskReducerActions.SET_LOADING, payload: { bool } });
   };
 
-  const addTask = async (name: string, done: boolean, description?: string, due_date?: Date) => {
+  const addTask = async (name: string, done: boolean, description?: string, due_date?: CustomDate | null) => {
     setTaskLoading(true);
     const userId = localStorage.getItem(userIdKey);
     if (!userId) return; //TODO: throw error;
+    const date = new Date;
     const newTask: Task = {
       name,
       description,
       user: userId,
-      creation_date: new Date,
+      creation_date: { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() },
       due_date,
       project_id: projectState.selectedProject.id,
       done
