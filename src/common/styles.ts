@@ -1,6 +1,5 @@
 import { theme } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import LoaderSmall from './LoaderSmall/LoaderSmall';
 
 export const blackGrayColored = styled.h1`
   color: ${theme.colors.gray[600]};

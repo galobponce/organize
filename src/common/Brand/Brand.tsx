@@ -1,13 +1,13 @@
-import React from 'react';
+import { FC } from 'react';
 import { Box } from '@chakra-ui/react';
 
-import { Logo, MutedText } from './styles';
+import { Logo, MutedText } from '../styles';
 
 interface IBrand {
   withSlogan?: boolean;
 };
 
-const Brand: React.FC<IBrand> = ({ withSlogan }) => {
+const Brand: FC<IBrand> = ({ withSlogan }) => {
   return (
     <Box>
       <Logo className='notranslate unselectable'>Organize</Logo>

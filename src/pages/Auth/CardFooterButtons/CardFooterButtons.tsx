@@ -1,16 +1,16 @@
-import React from 'react';
+import { FC } from 'react';
 import { Link } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import routes from '../../routes';
-import { CardFooter } from './styles';
+import routes from '../../../routes';
+import { CardFooter } from '../styles';
 
 interface ICardFooterButtons { 
   currentUrl: string;
   emailSent?: boolean;
 }
 
-const CardFooterButtons: React.FC<ICardFooterButtons> = ({ currentUrl, emailSent }) => {  
+const CardFooterButtons: FC<ICardFooterButtons> = ({ currentUrl, emailSent }) => {  
   return (
     <CardFooter>
 

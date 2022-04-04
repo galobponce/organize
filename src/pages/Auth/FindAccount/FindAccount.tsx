@@ -4,8 +4,8 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import routes from '../../../routes';
-import { FormInput } from '../../../common';
 import { useForm } from '../../../hooks/useForm';
+import FormInput from '../../../common/FormInput';
 import { MutedText } from '../../../common/styles';
 import CardFooterButtons from '../CardFooterButtons';
 import { useAuthContext } from '../../../hooks/useAuthContext';

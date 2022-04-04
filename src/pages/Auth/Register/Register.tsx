@@ -3,8 +3,9 @@ import { FC, FormEvent, useEffect } from 'react';
 import { Button, useToast } from '@chakra-ui/react';
 
 import routes from '../../../routes';
+import Brand from '../../../common/Brand';
 import { useForm } from '../../../hooks/useForm';
-import { Brand, FormInput } from '../../../common';
+import FormInput from '../../../common/FormInput';
 import CardFooterButtons from '../CardFooterButtons';
 import { useAuthContext } from '../../../hooks/useAuthContext';
 import { getMessageFromError, authErrors } from '../../../utils/ErrorUtils';

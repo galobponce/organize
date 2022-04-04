@@ -1,7 +1,7 @@
-import React from 'react';
+import { FC } from 'react';
 import { FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 
-import { InputWrapper } from './styles';
+import { InputWrapper } from '../styles';
 
 interface IFormTextArea {
   required?: boolean;
@@ -11,7 +11,7 @@ interface IFormTextArea {
   onInputChange: (e: any) => void;
 };
 
-const FormTextArea: React.FC<IFormTextArea> = ({ required, name, label, inputValue, onInputChange }) => {
+const FormTextArea: FC<IFormTextArea> = ({ required, name, label, inputValue, onInputChange }) => {
   return (
     <InputWrapper>
       <FormControl isRequired={required}>

@@ -1,7 +1,7 @@
-import React from 'react';
+import { FC } from 'react';
 import { Input, FormControl, FormLabel } from '@chakra-ui/react';
 
-import { InputWrapper } from './styles';
+import { InputWrapper } from '../styles';
 
 interface IFormInput {
   required?: boolean;
@@ -12,7 +12,7 @@ interface IFormInput {
   onInputChange: (e: any) => void;
 };
 
-const FormInput: React.FC<IFormInput> = ({ required, name, type, label, inputValue, onInputChange }) => {
+const FormInput: FC<IFormInput> = ({ required, name, type, label, inputValue, onInputChange }) => {
   return (
     <InputWrapper>
       <FormControl isRequired={required}>
