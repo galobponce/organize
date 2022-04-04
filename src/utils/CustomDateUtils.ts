@@ -4,6 +4,7 @@ export const getStringFromCustomDate = (date: CustomDate) => {
   return `${date.day}/${date.month}/${date.year}`;
 };
 
+// Returns a required HTML date format from custom date
 export const getHTMLStringFromCustomDate = (date: CustomDate) => {
   let auxDay = date.day.toString();
   let auxMonth = date.month.toString();
@@ -24,4 +25,14 @@ export const getCustomDateFromString = (str: string, separator: string) => {
     month: Number(result[1]),
     day: Number(result[2])
   };
+};
+
+export const isGreaterThanToday = (date: CustomDate): boolean => {
+  if (!date.day) return false;  
+
+  const todayDate = new Date;
+  if (date.year < todayDate.getFullYear()) return true;
+  if (date.month < todayDate.getMonth() + 1) return true;
+  if (date.day < todayDate.getDate()) return true;
+  return false;
 };

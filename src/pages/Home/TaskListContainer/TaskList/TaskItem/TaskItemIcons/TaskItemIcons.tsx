@@ -9,7 +9,7 @@ const TaskItemIcons: FC<{ edit: () => void, delete: () => void }> = (props) => {
   return (
     <TaskItemIconsContainer>
       <Button size='sm' bg='inherit' rounded='full' onClick={props.edit}>
-        <FontAwesomeIcon color='inherit' size='1x' icon={faEdit}></FontAwesomeIcon>
+        <FontAwesomeIcon color='initial' size='1x' icon={faEdit}></FontAwesomeIcon>
       </Button>
       <Button size='sm' bg='inherit' rounded='full' _hover={{backgroundColor: theme.colors.red[100]}} onClick={props.delete}>
         <FontAwesomeIcon color='red' size='1x' icon={faTrashCan}></FontAwesomeIcon>

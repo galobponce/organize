@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Td, Tr, useToast } from '@chakra-ui/react';
+import { Td, theme, Tr, useToast } from '@chakra-ui/react';
 
 import TaskItemIcons from './TaskItemIcons';
 import { cutString } from '../../../../../utils/StringUtils';
@@ -7,7 +7,7 @@ import { Task } from '../../../../../context/Task/TaskContext';
 import { useAppContext } from '../../../../../hooks/useAppContext';
 import { useTaskContext } from '../../../../../hooks/useTaskContext';
 import { getMessageFromError } from '../../../../../utils/ErrorUtils';
-import { getStringFromCustomDate } from '../../../../../utils/CustomDateUtils';
+import { getStringFromCustomDate, isGreaterThanToday } from '../../../../../utils/CustomDateUtils';
 
 const TaskItem: FC<{ task: Task }> = ({ task }) => {
   const toast = useToast();
@@ -56,7 +56,7 @@ const TaskItem: FC<{ task: Task }> = ({ task }) => {
   };
 
   return (
-    <Tr>
+    <Tr color={task.done ? theme.colors.green[500] : task.due_date && isGreaterThanToday(task.due_date) ? 'red' : 'unser'}>
       <Td>{cutString(task.name, 40)}</Td>
       <Td>{task.due_date && getStringFromCustomDate(task.due_date) || 'None'}</Td>
       <Td><TaskItemIcons edit={handleEditClick} delete={handleDeleteClick} /></Td>
